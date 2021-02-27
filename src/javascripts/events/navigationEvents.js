@@ -2,8 +2,8 @@
 import { showAuthors } from '../components/authors';
 import { showBooks } from '../components/books';
 import signOut from '../helpers/auth/signOut';
-import { getAuthors } from '../helpers/data/authorData';
-import { getBooks } from '../helpers/data/bookData';
+import { getAuthors, getFavoriteAuthors } from '../helpers/data/authorData';
+import { getBooks, getSaleBooks } from '../helpers/data/bookData';
 
 // navigation events
 const navigationEvents = () => {
@@ -13,7 +13,7 @@ const navigationEvents = () => {
 
   // BOOKS ON SALE
   document.querySelector('#sale-books').addEventListener('click', () => {
-    console.warn('Sale Books');
+    getSaleBooks().then((saleBooksArray) => showBooks(saleBooksArray));
   });
 
   // ALL BOOKS
@@ -41,7 +41,14 @@ const navigationEvents = () => {
   // 2. Convert the response to an array because that is what the makeAuthors function is expecting
   // 3. If the array is empty because there are no authors, make sure to use the emptyAuthor function
   document.querySelector('#authors')
-    .addEventListener('click', () => getAuthors().then((authors) => showAuthors(authors)));
+    .addEventListener('click', () => {
+      getAuthors().then((authors) => showAuthors(authors));
+    });
+
+  document.querySelector('#fave-authors')
+    .addEventListener('click', () => {
+      getFavoriteAuthors().then((favoriteAuthorsArray) => showAuthors(favoriteAuthorsArray));
+    });
 };
 
 export default navigationEvents;
