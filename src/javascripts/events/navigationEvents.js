@@ -1,4 +1,4 @@
-// import { showAuthors } from '../components/authors';
+import 'firebase/auth';
 import { showAuthors } from '../components/authors';
 import { showBooks } from '../components/books';
 import signOut from '../helpers/auth/signOut';
@@ -6,7 +6,7 @@ import { getAuthors, getFavoriteAuthors } from '../helpers/data/authorData';
 import { getBooks, getSaleBooks } from '../helpers/data/bookData';
 
 // navigation events
-const navigationEvents = () => {
+const navigationEvents = (uid) => {
   // LOGOUT BUTTON
   document.querySelector('#logout-button')
     .addEventListener('click', signOut);
@@ -18,7 +18,7 @@ const navigationEvents = () => {
 
   // ALL BOOKS
   document.querySelector('#all-books').addEventListener('click', () => {
-    getBooks().then((booksArray) => showBooks(booksArray));
+    getBooks(uid).then((booksArray) => showBooks(booksArray));
   });
 
   // SEARCH
@@ -42,7 +42,7 @@ const navigationEvents = () => {
   // 3. If the array is empty because there are no authors, make sure to use the emptyAuthor function
   document.querySelector('#authors')
     .addEventListener('click', () => {
-      getAuthors().then((authors) => showAuthors(authors));
+      getAuthors(uid).then((authors) => showAuthors(authors));
     });
 
   document.querySelector('#fave-authors')

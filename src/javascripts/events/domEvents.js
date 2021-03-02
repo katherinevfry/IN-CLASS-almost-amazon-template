@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+import 'firebase/auth';
 import { showAuthors } from '../components/authors';
 import { showBooks } from '../components/books';
 import addBookForm from '../components/forms/addBookForm';
@@ -11,7 +13,7 @@ const domEvents = () => {
       if (window.confirm('Want to delete?')) {
         // pull the firebasekey off the button
         const firebaseKey = e.target.id.split('--')[1];
-        deleteBook(firebaseKey).then((booksArray) => showBooks(booksArray));
+        deleteBook(firebaseKey, firebase.auth().currentUser.uid).then((booksArray) => showBooks(booksArray));
       }
     }
 
@@ -30,8 +32,9 @@ const domEvents = () => {
         price: document.querySelector('#price').value,
         sale: document.querySelector('#sale').checked,
         author_id: document.querySelector('#author').value,
+        uid: firebase.auth().currentUser.uid,
       };
-      createBook(bookObject).then((booksArray) => showBooks(booksArray));
+      createBook(bookObject, firebase.auth().currentUser.uid).then((booksArray) => showBooks(booksArray));
     }
 
     // CLICK EVENT FOR SHOWING MODAL FORM FOR ADDING A BOOK
@@ -49,7 +52,7 @@ const domEvents = () => {
       if (window.confirm('Want to delete?')) {
         // pull the firebasekey off the button
         const firebaseKey = e.target.id.split('--')[1];
-        deleteAuthor(firebaseKey).then((authorsArray) => showAuthors(authorsArray));
+        deleteAuthor(firebaseKey, firebase.auth().currentUser.uid).then((authorsArray) => showAuthors(authorsArray));
       }
     }
     // ADD CLICK EVENT FOR SHOWING FORM FOR ADDING AN AUTHOR
@@ -61,8 +64,9 @@ const domEvents = () => {
         first_name: document.querySelector('#firstName').value,
         last_name: document.querySelector('#lastName').value,
         favorite: document.querySelector('#favorite').checked,
+        uid: firebase.auth().currentUser.uid,
       };
-      createAuthor(authorObject).then((authorsArray) => showAuthors(authorsArray));
+      createAuthor(authorObject, firebase.auth().currentUser.uid).then((authorsArray) => showAuthors(authorsArray));
     }
     // ADD CLICK EVENT FOR EDITING AN AUTHOR
   });
