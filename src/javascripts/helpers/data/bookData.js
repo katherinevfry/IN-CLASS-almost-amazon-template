@@ -55,6 +55,13 @@ const updateBook = (firebaseKey, bookObject) => new Promise((resolve, reject) =>
 
 // SEARCH BOOKS
 
+// GET ALL AUTHOR BOOKS
+const getAuthorBooks = (authorId) => new Promise((resolve, reject) => {
+  axios.get(`${dbUrl}/books.json?orderBy="author_id"&equalTo="${authorId}"`)
+    .then((response) => resolve(Object.values(response.data)))
+    .catch((error) => reject(error));
+});
+
 export {
-  getBooks, createBook, getSaleBooks, deleteBook, getSingleBook, updateBook
+  getBooks, createBook, getSaleBooks, deleteBook, getSingleBook, updateBook, getAuthorBooks
 };

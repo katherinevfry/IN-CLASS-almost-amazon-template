@@ -7,7 +7,7 @@ const showAuthors = (array) => {
   array.forEach((item) => {
     document.querySelector('#store').innerHTML += `<div class="card">
     <div class="card-body" style="height: 210px;">
-      <h5 class="card-title">${item.first_name} ${item.last_name}</h5>
+      <a href="#"><h5 id="author-name-info^^${item.firebaseKey}" class="card-title">${item.first_name} ${item.last_name}</h5></a>
       <p>Contact:</p>
       <p>${item.email}</p>
       <hr>

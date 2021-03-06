@@ -39,14 +39,14 @@ const getFavoriteAuthors = () => new Promise((resolve, reject) => {
       resolve(favoriteAuthorsArray);
     }).catch((error) => reject(error));
 });
-// UPDATE AUTHOR
 
 // GET SINGLE BOOK
-const getSingleAuthor = (firebaseKey) => new Promise((resolve, reject) => {
-  axios.get(`${dbUrl}/authors/${firebaseKey}.json`)
+const getSingleAuthor = (authorId) => new Promise((resolve, reject) => {
+  axios.get(`${dbUrl}/authors/${authorId}.json`)
     .then((response) => resolve(response.data))
     .catch((error) => reject(error));
 });
+
 // UPDATE BOOK
 const updateAuthor = (firebaseKey, authorObject) => new Promise((resolve, reject) => {
   axios.patch(`${dbUrl}/authors/${firebaseKey}.json`, authorObject)
