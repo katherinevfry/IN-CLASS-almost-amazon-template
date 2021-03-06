@@ -1,19 +1,36 @@
+import 'firebase/auth';
+import { emptyAuthors, showAuthors } from '../components/authors';
+import { emptyBooks, showBooks } from '../components/books';
 import signOut from '../helpers/auth/signOut';
+import { getAuthors, getFavoriteAuthors } from '../helpers/data/authorData';
+import { getBooks, getSaleBooks } from '../helpers/data/bookData';
 
 // navigation events
-const navigationEvents = () => {
+const navigationEvents = (uid) => {
   // LOGOUT BUTTON
   document.querySelector('#logout-button')
     .addEventListener('click', signOut);
 
   // BOOKS ON SALE
   document.querySelector('#sale-books').addEventListener('click', () => {
-    console.warn('Sale Books');
+    getSaleBooks().then((saleBooksArray) => {
+      if (saleBooksArray.length) {
+        showBooks(saleBooksArray);
+      } else {
+        emptyBooks();
+      }
+    });
   });
 
   // ALL BOOKS
   document.querySelector('#all-books').addEventListener('click', () => {
-    console.warn('All Books');
+    getBooks(uid).then((booksArray) => {
+      if (booksArray.length) {
+        showBooks(booksArray);
+      } else {
+        emptyBooks();
+      }
+    });
   });
 
   // SEARCH
@@ -35,6 +52,27 @@ const navigationEvents = () => {
   // 1. When a user clicks the authors link, make a call to firebase to get all authors
   // 2. Convert the response to an array because that is what the makeAuthors function is expecting
   // 3. If the array is empty because there are no authors, make sure to use the emptyAuthor function
+  document.querySelector('#authors')
+    .addEventListener('click', () => {
+      getAuthors(uid).then((authors) => {
+        if (authors.length) {
+          showAuthors(authors);
+        } else {
+          emptyAuthors();
+        }
+      });
+    });
+
+  document.querySelector('#fave-authors')
+    .addEventListener('click', () => {
+      getFavoriteAuthors().then((favoriteAuthorsArray) => {
+        if (favoriteAuthorsArray.length) {
+          showAuthors(favoriteAuthorsArray);
+        } else {
+          emptyAuthors();
+        }
+      });
+    });
 };
 
 export default navigationEvents;
