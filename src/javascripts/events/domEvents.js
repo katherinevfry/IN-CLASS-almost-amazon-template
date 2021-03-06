@@ -4,7 +4,7 @@ import { showAuthors } from '../components/authors';
 import { showBooks } from '../components/books';
 import addBookForm from '../components/forms/addBookForm';
 import {
-  createAuthor, deleteAuthor, getSingleAuthor, updateAuthor
+  createAuthor, getSingleAuthor, updateAuthor
 } from '../helpers/data/authorData';
 import {
   createBook, deleteBook, getSingleBook, updateBook
@@ -13,6 +13,8 @@ import editBookForm from '../components/forms/editBookForm';
 import editAuthorForm from '../components/forms/editAuthorForm';
 import formModal from '../components/forms/formModal';
 import modalAuthor from '../components/forms/modalAuthor';
+import { authorBookInfo, deleteAuthorBooks } from '../helpers/data/authorBooksData';
+import authorInfo from '../components/authorInfo';
 
 const domEvents = (uid) => {
   document.querySelector('body').addEventListener('click', (e) => {
@@ -23,6 +25,14 @@ const domEvents = (uid) => {
         const firebaseKey = e.target.id.split('--')[1];
         deleteBook(firebaseKey, uid).then((booksArray) => showBooks(booksArray));
       }
+    }
+    // SHOW BOOKS ASSOCIATED WITH A SPECIFIC AUTHOR
+    if (e.target.id.includes('author-name-info')) {
+      const authorId = e.target.id.split('^^')[1];
+      authorBookInfo(authorId).then((authorInfoObject) => {
+        showBooks(authorInfoObject.books);
+        authorInfo(authorInfoObject.author);
+      });
     }
 
     // CLICK EVENT FOR SHOWING FORM FOR ADDING A BOOK
@@ -74,7 +84,7 @@ const domEvents = (uid) => {
       if (window.confirm('Want to delete?')) {
         // pull the firebasekey off the button
         const firebaseKey = e.target.id.split('--')[1];
-        deleteAuthor(firebaseKey, uid).then((authorsArray) => showAuthors(authorsArray));
+        deleteAuthorBooks(firebaseKey, uid).then((authorsArray) => showAuthors(authorsArray));
       }
     }
     // ADD CLICK EVENT FOR SHOWING FORM FOR ADDING AN AUTHOR
@@ -112,6 +122,11 @@ const domEvents = (uid) => {
 
       $('#formModal').modal('toggle');
     }
+
+    // if (e.target.id.includes('author-name-title')) {
+    //   const authorId = e.target.id.split('--')[1];
+    //   console.warn(authorId);
+    // }
   });
 };
 
